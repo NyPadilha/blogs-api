@@ -19,7 +19,15 @@ const getUsers = async () => {
 };
 
 const getUserById = async (id) => {
-  const user = await User.findByPk(id);
+  const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
+
+  if (!user) {
+    return { 
+      status: 'NOT_FOUND',
+      data: { message: 'User does not exist' }, 
+    };
+  }
+
   return { status: 'SUCCESSFUL', data: user };
 };
 
