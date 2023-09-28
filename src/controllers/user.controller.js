@@ -25,6 +25,13 @@ const addUser = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const getUsers = async (_req, res) => {
+  const { status, data } = await userService.getUsers();
+
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   addUser,
+  getUsers,
 };

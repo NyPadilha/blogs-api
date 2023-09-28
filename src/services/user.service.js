@@ -14,8 +14,8 @@ const getUserByEmail = async (email, password) => {
 };
 
 const getUsers = async () => {
-  const user = await User.findAll();
-  return { status: 'SUCCESSFUL', data: user };
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  return { status: 'SUCCESSFUL', data: users };
 };
 
 const getUserById = async (id) => {
@@ -31,7 +31,7 @@ const addUser = async (displayName, email, password, image) => {
   await User.create({ displayName, email, password, image });
 
   const user = await User.findOne({ where: { email } });
-  
+
   return { status: 'CREATED', data: user };
 };
   

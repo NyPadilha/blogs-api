@@ -9,10 +9,10 @@ function extractToken(bearerToken) {
 }
 
 const validateJWT = async (req, res, next) => {
-  const bearerToken = req.headers('Authorization');
+  const bearerToken = req.header('Authorization');
     
   if (!bearerToken) {
-    return res.status(httpStatusMap.BAD_REQUEST).json({ message: 'missing auth token' }); // esboco de solucao
+    return res.status(httpStatusMap.UNAUTHORIZED).json({ message: 'Token not found' });
   }
   
   const token = extractToken(bearerToken);
@@ -23,7 +23,7 @@ const validateJWT = async (req, res, next) => {
     req.user = data;
     next();
   } catch (err) {
-    return res.status(httpStatusMap.INVALID_VALUE).json({ message: 'invalid token' }); // esboco de solucao
+    return res.status(httpStatusMap.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
   }
 };
 
