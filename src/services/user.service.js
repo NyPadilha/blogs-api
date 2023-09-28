@@ -23,12 +23,21 @@ const getUserById = async (id) => {
   return { status: 'SUCCESSFUL', data: user };
 };
 
-const createUser = (displayName, email, password, image) => 
-  User.create({ displayName, email, password, image });
+const addUser = async (displayName, email, password, image) => {
+  const exist = await User.findOne({ where: { email } });
 
+  if (exist) return { status: 'CONFLICT', data: { message: 'User already registered' } };
+
+  await User.create({ displayName, email, password, image });
+
+  const user = await User.findOne({ where: { email } });
+  
+  return { status: 'CREATED', data: user };
+};
+  
 module.exports = {
   getUserByEmail,
   getUsers,
   getUserById,
-  createUser,
+  addUser,
 };
