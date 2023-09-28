@@ -20,7 +20,8 @@ const validateJWT = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, secret);
     const { data } = await userService.getUserById(decoded.data);
-    req.user = data;
+    req.user = data.id;
+    res.locals = data.id;
     next();
   } catch (err) {
     return res.status(httpStatusMap.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
